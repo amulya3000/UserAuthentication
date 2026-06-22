@@ -1,6 +1,8 @@
 <?php
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
+use App\Models\User;                   
+
 
 class UserController extends Controller{
     public function registration(Request $request ){
@@ -9,10 +11,13 @@ class UserController extends Controller{
             'email' => 'required|email',
             'password' => 'required|confirmed',
         ]);
+        
         $user = User::create($data);
         if($user){
             return redirect()->route('login');
+            
         }
+       
     }
 
 }
