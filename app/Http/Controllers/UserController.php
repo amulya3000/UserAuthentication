@@ -37,7 +37,7 @@ class UserController extends Controller{
     }
     public function dashboardPage(){
         if(Auth::check()){
-            return view('dashboard');
+            return view('home');
 
         }else{
             return \redirect()->route('login');
