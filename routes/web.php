@@ -18,23 +18,18 @@ Route::get('/home', function () {
 });
 
 Route::view('register', 'register')->name('register');
-
-
 Route::post('registerSave', [UserController::class, 'registration'])->name('registerSave');
 
 
 Route::view('login', 'login')->name('login');
 Route::post('login', [UserController::class, 'Login'])->name('loginMatch'); 
 
-// Route::get('dashboard', [UserController::class, 'dashboardPage'])
-//     ->name('dashboard')
-//     ->middleware('IsUserValid',TestUser::class);
 
-Route::middleware(['ok-user'])->group(function(){
+Route::middleware(['ok-user'])->group(function() {
     Route::get('dashboard', [UserController::class, 'dashboardPage'])->name('dashboard');
-}); 
-
+    Route::view('admin', 'admin')->name('admin');
+});
 
 
 Route::post('logout', [UserController::class, 'logout'])->name('logout');
- 
+  

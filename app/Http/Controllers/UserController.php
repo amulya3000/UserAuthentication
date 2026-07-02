@@ -31,9 +31,10 @@ class UserController extends Controller{
         ]);
         if(Auth::attempt($credentials)){
             $request->session()->regenerate();
-            return redirect()->intended('dashboard');
+           return \redirect()->route('admin');
+        
+        return redirect()->route('dashboard');
         }
-
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
         ])->onlyInput('email');
@@ -48,4 +49,5 @@ class UserController extends Controller{
         $request->session()->regenerateToken();
         return redirect()->route('login');
     }
+    
 }

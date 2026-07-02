@@ -18,13 +18,17 @@ class ValidUser
     {
         echo "<h3 class='text-sucess'>We are now in ValidUser Middleware.</h3>";
         
-        if (Auth::check()) {
-            return $next($request);
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Please log in.');
         } 
         
-        return redirect()->route('login');
+       if($request ->is('admin')&& Auth::user()->role !== 'admin'){
+        return redirect()->route('dashboard')->with('error', 'You do not have admin access.');
+       }
+       return $next($request);
+        
+
+        
     }  
-    public function terminate(Request $request, Response $responce){
-        echo " <h3 class = 'text-danger'> We are now terminate ValideUser Middleware</h3>";
-    }  
+    
 }
