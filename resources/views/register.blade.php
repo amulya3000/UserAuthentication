@@ -155,12 +155,25 @@
         </div>
       @endif
 
-      <action="{{ route('registerSave') }}" method="POST">
+      <form action="{{ route('registerSave') }}" method="POST">
         @csrf 
 
         <div class="form-group">
           <label for="username" class="form-label">Name</label>
           <input type="text" name="name" class="form-control" id="username" value="{{ old('name') }}" required>
+        </div>
+
+        <div class="form-group">
+          <label for="userage" class="form-label">Age</label>
+          <input type="number" name="age" class="form-control" id="userage" value="{{ old('age') }}" required>
+        </div>
+
+        <div class="form-group">
+          <label for="role" class="form-label">Select Role</label>
+          <select name="role" id="role" class="form-control" required>
+              <option value="employee">Employee</option>
+              <option value="admin">Admin</option>
+          </select>
         </div>
 
         <div class="form-group">
@@ -179,8 +192,7 @@
         </div>
 
         <button type="submit" class="btn-primary btn-block">Register</button>
-      </action=>
-
+      </form>
       <div class="auth-footer">
         Already have an account? <a href="/login">Log in</a>
       </div>

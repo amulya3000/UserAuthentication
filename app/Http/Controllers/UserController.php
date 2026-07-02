@@ -10,8 +10,11 @@ class UserController extends Controller{
     public function registration(Request $request ){
         $data = $request->validate([
             'name' => 'required',
+            'age' => 'required|integer|min:1|max:120',
+            'role' => 'required|string|in:admin,employee',
             'email' => 'required|email',
             'password' => 'required|confirmed',
+            
         ]);
         
         $user = User::create($data);
@@ -36,12 +39,8 @@ class UserController extends Controller{
         ])->onlyInput('email');
     }
     public function dashboardPage(){
-        if(Auth::check()){
-            return view('home');
-
-        }else{
-            return \redirect()->route('login');
-        }
+            return view('dashboard');  
+        
     }
     public function logout(Request $request){
         Auth::logout();
