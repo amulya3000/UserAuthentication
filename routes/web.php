@@ -27,9 +27,13 @@ Route::post('login', [UserController::class, 'Login'])->name('loginMatch');
 
 Route::middleware(['ok-user'])->group(function() {
     Route::get('dashboard', [UserController::class, 'dashboardPage'])->name('dashboard');
-    Route::view('admin', 'admin')->name('admin');
+    Route::get('admin', [UserController::class, 'index'])->name('admin'); // controller, not Route::view
 });
 
+Route::post('admin/users/{user}/approve', [UserController::class, 'approve'])->name('admin.users.approve');
+Route::post('admin/users/{user}/reject', [UserController::class, 'reject'])->name('admin.users.reject');
 
 Route::post('logout', [UserController::class, 'logout'])->name('logout');
-  
+
+
+Route::post('admin', [UserController::class, 'index'])->name('indes'); 
