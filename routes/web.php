@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\TestUser;
 use App\Http\Middleware\ValidUser;
@@ -27,7 +28,10 @@ Route::post('login', [UserController::class, 'Login'])->name('loginMatch');
 
 Route::middleware(['ok-user'])->group(function() {
     Route::get('dashboard', [UserController::class, 'dashboardPage'])->name('dashboard');
-    Route::get('admin', [UserController::class, 'index'])->name('admin'); // controller, not Route::view
+    Route::get('admin', [UserController::class, 'index'])->name('admin'); 
+
+    Route::post('task', [TaskController::class, 'store'])->name('tasks.store');
+    Route::post('task/{task}/status', [TaskController::class, 'updateStatus'])->name('tasks.status');
 });
 
 Route::post('admin/users/{user}/approve', [UserController::class, 'approve'])->name('admin.users.approve');
@@ -35,5 +39,4 @@ Route::post('admin/users/{user}/reject', [UserController::class, 'reject'])->nam
 
 Route::post('logout', [UserController::class, 'logout'])->name('logout');
 
-
-Route::post('admin', [UserController::class, 'index'])->name('indes'); 
+ 

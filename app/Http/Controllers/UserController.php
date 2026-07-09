@@ -1,8 +1,9 @@
 <?php
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Task;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -58,7 +59,8 @@ class UserController extends Controller
 
     public function dashboardPage()
     {
-        return view('dashboard');
+        $tasks = Task::where('user_id', Auth::id())->get();
+        return view('dashboard', compact('tasks'));
     }
 
     public function logout(Request $request)
@@ -69,11 +71,12 @@ class UserController extends Controller
         return redirect()->route('login');
     }
 
-   public function index()
-{
-    $pendingUsers = User::where('status', 'pending')->get();
-    return view('admin', compact('pendingUsers')); // 'admin' not 'admin.pending-users'
-}
+    public function index()
+    {
+        $pendingUsers = User::where('status', 'pending')->get();
+        $employees = User::where('role', 'employee')->where('status', 'approved')->get();
+        return view('admin', compact('pendingUsers', 'employees'));
+    }
 
     public function approve(User $user)
     {
@@ -86,4 +89,7 @@ class UserController extends Controller
         $user->update(['status' => 'rejected']);
         return back()->with('success', "{$user->name} rejected.");
     }
+
+
+
 }

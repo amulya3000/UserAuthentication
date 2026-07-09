@@ -15,9 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->string('priority')->defult('Medium');
-            $table->enum('status',['To Do','In progress','Completed'])->defult('To Do');
-            $table->timestamps();
+            $table->string('priority')->default('Medium');
+            $table->enum('status', ['To Do', 'In Progress', 'Completed'])->default('To Do');
             $table->timestamps();
         });
     }
