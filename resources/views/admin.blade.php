@@ -4,13 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Control Panel</title>
-    <!-- Tailwind CSS for modern design and responsiveness -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
+        body { font-family: 'Inter', sans-serif; }
     </style>
 </head>
 <body class="h-full flex flex-col">
@@ -30,7 +27,7 @@
                 </div>
             </div>
 
-            <!-- Profile and Log Out Actions -->
+            <!-- Profile Actions -->
             <div class="flex items-center space-x-4">
                 <div class="text-right hidden sm:block">
                     <p class="text-sm font-semibold text-slate-100">{{ Auth::user()->name }}</p>
@@ -70,7 +67,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                     </span>
-                    <h3 class="text-sm font-semibold text-red-800">Deployment Error Detected</h3>
+                    <h3 class="text-sm font-semibold text-red-800">Deployment Error</h3>
                 </div>
                 <ul class="list-disc list-inside text-xs text-red-700 pl-8 space-y-1">
                     @foreach ($errors->all() as $error)
@@ -80,37 +77,27 @@
             </div>
         @endif
 
-        <!-- Primary Workspace Action Grid -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
             <!-- SECTION 1: MANUAL WORKFLOW DIVISION PANEL -->
-            <section class="lg:col-span-5 bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+            <section class="lg:col-span-5 bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
                 <div class="p-6 border-b border-slate-100 bg-slate-50/50">
                     <h2 class="text-md font-semibold text-slate-900">Task Allocation Engine</h2>
-                    <p class="text-xs text-slate-500 mt-1">Deploy segmented workflow structures directly into assigned employee dashboard containers.</p>
+                    <p class="text-xs text-slate-500 mt-1">Deploy tasks along with specifications directly to assigned employee containers.</p>
                 </div>
 
                 <div class="p-6">
                     <form action="{{ route('tasks.store') }}" method="POST" class="space-y-5">
                         @csrf
-
-                        <!-- Task Name Selection -->
                         <div>
-                            <label for="title" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">Select Blueprint Scope</label>
-                            <select id="title" name="title" required class="w-full text-sm rounded-lg border border-slate-200 p-3 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition outline-none">
-                                <option value="" disabled selected>Choose an active workspace task...</option>
-                                <option value="Optimize Backend Queries">Optimize Backend Queries</option>
-                                <option value="Build Docker Deployment Configuration">Build Docker Deployment Configuration</option>
-                                <option value="Review UI Component Accessibility">Review UI Component Accessibility</option>
-                                <option value="Refactor API Routing Parameters">Refactor API Routing Parameters</option>
-                            </select>
+                            <label for="title" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">Task Title</label>
+                            <input type="text" id="title" name="title" required placeholder="Describe task objective..." class="w-full text-sm rounded-lg border border-slate-200 p-3 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition outline-none">
                         </div>
 
-                        <!-- Target Employee Designation -->
                         <div>
                             <label for="user_id" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">Assign To Employee</label>
                             <select id="user_id" name="user_id" required class="w-full text-sm rounded-lg border border-slate-200 p-3 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition outline-none">
-                                <option value="" disabled selected>Choose an approved employee workspace...</option>
+                                <option value="" disabled selected>Choose an employee...</option>
                                 @forelse($employees as $employee)
                                     <option value="{{ $employee->id }}">{{ $employee->name }}</option>
                                 @empty
@@ -119,95 +106,75 @@
                             </select>
                         </div>
 
-                        <!-- Priority Configuration Tiers -->
                         <div>
                             <label for="priority" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">Priority Classification</label>
                             <select id="priority" name="priority" required class="w-full text-sm rounded-lg border border-slate-200 p-3 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition outline-none">
-                                <option value="Low">Low Priority Worksite</option>
-                                <option value="Medium" selected>Medium Priority Worksite</option>
-                                <option value="High">High Priority Worksite</option>
+                                <option value="Low">Low Priority</option>
+                                <option value="Medium" selected>Medium Priority</option>
+                                <option value="High">High Priority</option>
                             </select>
                         </div>
 
-                        <!-- Submit Form Button -->
-                        <button type="submit" class="w-full bg-slate-950 hover:bg-slate-800 text-white font-medium text-sm py-3 rounded-lg shadow-md transition cursor-pointer flex items-center justify-center gap-2">
-                            Deploy Workflow Container &rarr;
+                        <!-- Detailed Task Description Field -->
+                        <div>
+                            <label for="description" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">Task Requirements & Description</label>
+                            <textarea id="description" name="description" required rows="4" placeholder="Detail the guidelines, key dependencies, and expected deliverables for the employee..." class="w-full text-sm rounded-lg border border-slate-200 p-3 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition outline-none leading-relaxed"></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full bg-slate-950 hover:bg-slate-800 text-white font-medium text-sm py-3 rounded-lg shadow-sm transition flex items-center justify-center gap-2 cursor-pointer">
+                            Deploy Task &rarr;
                         </button>
                     </form>
                 </div>
             </section>
 
-            <!-- SECTION 2: REGISTRATION APPROVAL QUEUE -->
-            <section class="lg:col-span-7 bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+            <!-- SECTION 2: PROJECT SPECIFICATION PORTAL -->
+            <section class="lg:col-span-7 bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
                 <div class="p-6 border-b border-slate-100 bg-slate-50/50">
-                    <h2 class="text-md font-semibold text-slate-900">User Approvals</h2>
-                    <p class="text-xs text-slate-500 mt-1">Audit onboarding credentials of employees awaiting activation inside the system database.</p>
+                    <h2 class="text-md font-semibold text-slate-900">Project Brief & Guidelines</h2>
+                    <p class="text-xs text-slate-500 mt-1">Publish a comprehensive system walkthrough or roadmap (supports up to 2,000 words).</p>
                 </div>
 
                 <div class="p-6">
-                    @if($pendingUsers->isEmpty())
-                        <div class="text-center py-12 px-4 border-2 border-dashed border-slate-200 rounded-lg">
-                            <span class="text-slate-300 flex justify-center mb-3">
-                                <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                                </svg>
-                            </span>
-                            <h3 class="text-sm font-semibold text-slate-700">All Registration Queues Clear</h3>
-                            <p class="text-xs text-slate-400 mt-1">No pending employee verification requests await admin processing at this time.</p>
+                    <form action="{{ route('admin.project.update') }}" method="POST" class="space-y-4">
+                        @csrf
+                        <div>
+                            <label for="project_title" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">Brief Title</label>
+                            <input type="text" id="project_title" name="title" required value="{{ $project->title }}" class="w-full text-sm font-semibold rounded-lg border border-slate-200 p-3 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition outline-none">
                         </div>
-                    @else
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left border-collapse">
-                                <thead>
-                                    <tr class="border-b border-slate-200">
-                                        <th class="pb-3 text-xs font-bold text-slate-500 uppercase tracking-wider">Candidate Details</th>
-                                        <th class="pb-3 text-xs font-bold text-slate-500 uppercase tracking-wider">Role Requested</th>
-                                        <th class="pb-3 text-right text-xs font-bold text-slate-500 uppercase tracking-wider">Decision Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-slate-100">
-                                    @foreach($pendingUsers as $user)
-                                        <tr class="hover:bg-slate-50/50 transition">
-                                            <td class="py-4">
-                                                <div class="font-semibold text-sm text-slate-900">{{ $user->name }}</div>
-                                                <div class="text-xs text-slate-400">{{ $user->email }}</div>
-                                            </td>
-                                            <td class="py-4">
-                                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200/60 capitalize">
-                                                    {{ $user->role }}
-                                                </span>
-                                            </td>
-                                            <td class="py-4 text-right">
-                                                <div class="inline-flex gap-2">
-                                                    <!-- Approve Onboarding Credentials -->
-                                                    <form action="{{ route('admin.users.approve', $user->id) }}" method="POST">
-                                                        @csrf
-                                                        <button type="submit" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 text-xs font-semibold px-3 py-1.5 rounded-md transition cursor-pointer">
-                                                            Approve
-                                                        </button>
-                                                    </form>
 
-                                                    <!-- Reject Registration Request -->
-                                                    <form action="{{ route('admin.users.reject', $user->id) }}" method="POST">
-                                                        @csrf
-                                                        <button type="submit" class="bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 text-xs font-semibold px-3 py-1.5 rounded-md transition cursor-pointer">
-                                                            Reject
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                        <div>
+                            <label for="project_desc" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">Project Explanation / Specifications</label>
+                            <textarea id="project_desc" name="description" required rows="12" placeholder="Write up to 2,000 words explaining scope, architecture, design assets, and workflows..." class="w-full text-sm rounded-lg border border-slate-200 p-3 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition outline-none leading-relaxed" oninput="countWords()">{{ $project->description }}</textarea>
+                            <div class="flex justify-between text-xs text-slate-400 mt-2">
+                                <span>Markdown formatting can be added manually</span>
+                                <span id="word_counter">0 / 2000 Words</span>
+                            </div>
                         </div>
-                    @endif
+
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm px-5 py-2.5 rounded-lg shadow-sm transition cursor-pointer">
+                            Publish Project Brief
+                        </button>
+                    </form>
                 </div>
             </section>
 
         </div>
-
     </main>
 
+    <script>
+        function countWords() {
+            const text = document.getElementById('project_desc').value.trim();
+            const words = text ? text.split(/\s+/).length : 0;
+            const counter = document.getElementById('word_counter');
+            counter.innerText = `${words} / 2000 Words`;
+            if (words > 2000) {
+                counter.classList.add('text-red-500', 'font-semibold');
+            } else {
+                counter.classList.remove('text-red-500', 'font-semibold');
+            }
+        }
+        window.onload = countWords;
+    </script>
 </body>
 </html>

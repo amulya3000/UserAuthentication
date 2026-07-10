@@ -32,6 +32,8 @@ Route::middleware(['ok-user'])->group(function() {
 
     Route::post('task', [TaskController::class, 'store'])->name('tasks.store');
     Route::post('task/{task}/status', [TaskController::class, 'updateStatus'])->name('tasks.status');
+
+    Route::post('/admin/project', [ProjectController::class, 'update'])->name('admin.project.update');
 });
 
 Route::post('admin/users/{user}/approve', [UserController::class, 'approve'])->name('admin.users.approve');

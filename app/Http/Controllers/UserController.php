@@ -1,9 +1,10 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Models\Task;
-use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\User;
+use App\Models\Task;
+use App\Models\Project;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -49,7 +50,7 @@ class UserController extends Controller
             }
 
             $request->session()->regenerate();
-            return redirect()->route('admin'); // or 'dashboard' — pick one, see note below
+            return redirect()->route($user->role === 'admin' ? 'admin' : 'dashboard');
         }
 
         return back()->withErrors([
@@ -60,7 +61,14 @@ class UserController extends Controller
     public function dashboardPage()
     {
         $tasks = Task::where('user_id', Auth::id())->get();
-        return view('dashboard', compact('tasks'));
+
+      
+        $project = Project::find(1) ?? new Project([
+            'title' => 'Core System Guidelines',
+            'description' => 'The admin has not posted project details yet.'
+        ]);
+
+        return view('dashboard', compact('tasks', 'project'));
     }
 
     public function logout(Request $request)
@@ -73,23 +81,15 @@ class UserController extends Controller
 
     public function index()
     {
-        $pendingUsers = User::where('status', 'pending')->get();
+        // Fetch approved employees so admin can assign tasks to them
         $employees = User::where('role', 'employee')->where('status', 'approved')->get();
-        return view('admin', compact('pendingUsers', 'employees'));
+
+        // Fetch project or fallback to default layout
+        $project = Project::find(1) ?? new Project([
+            'title' => 'Project System Roadmap',
+            'description' => 'Add your comprehensive breakdown of the core project guidelines here (supports up to 2,000 words)...'
+        ]);
+
+        return view('admin', compact('employees', 'project'));
     }
-
-    public function approve(User $user)
-    {
-        $user->update(['status' => 'approved']);
-        return back()->with('success', "{$user->name} approved.");
-    }
-
-    public function reject(User $user)
-    {
-        $user->update(['status' => 'rejected']);
-        return back()->with('success', "{$user->name} rejected.");
-    }
-
-
-
 }
