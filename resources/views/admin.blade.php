@@ -79,87 +79,190 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
-            <!-- SECTION 1: MANUAL WORKFLOW DIVISION PANEL -->
-            <section class="lg:col-span-5 bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
-                <div class="p-6 border-b border-slate-100 bg-slate-50/50">
-                    <h2 class="text-md font-semibold text-slate-900">Task Allocation Engine</h2>
-                    <p class="text-xs text-slate-500 mt-1">Deploy tasks along with specifications directly to assigned employee containers.</p>
-                </div>
+            <!-- LEFT SIDEBAR: NAVIGATION & PENDING APPROVALS -->
+            <div class="lg:col-span-4 space-y-6">
+                
+                <!-- Navigation Menu -->
+                <nav class="bg-white rounded-xl border border-slate-200 shadow-xs p-3">
+                    <ul class="space-y-1">
+                        <li>
+                            <a href="#" class="flex items-center px-4 py-3 bg-blue-50 text-blue-700 rounded-lg font-medium text-sm transition">
+                                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                                Dashboard Home
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center px-4 py-3 text-slate-600 hover:bg-slate-50 hover:text-slate-900 rounded-lg font-medium text-sm transition">
+                                <svg class="w-5 h-5 mr-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                                User & Role Controls
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center px-4 py-3 text-slate-600 hover:bg-slate-50 hover:text-slate-900 rounded-lg font-medium text-sm transition">
+                                <svg class="w-5 h-5 mr-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                                Workspace Manager
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center px-4 py-3 text-slate-600 hover:bg-slate-50 hover:text-slate-900 rounded-lg font-medium text-sm transition">
+                                <svg class="w-5 h-5 mr-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                                Global Workflow
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center px-4 py-3 text-slate-600 hover:bg-slate-50 hover:text-slate-900 rounded-lg font-medium text-sm transition">
+                                <svg class="w-5 h-5 mr-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                                System Authentication
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
 
-                <div class="p-6">
-                    <form action="{{ route('tasks.store') }}" method="POST" class="space-y-5">
-                        @csrf
+                <!-- Pending Approvals Widget -->
+                <section class="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
+                    <div class="p-6 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
                         <div>
-                            <label for="title" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">Task Title</label>
-                            <input type="text" id="title" name="title" required placeholder="Describe task objective..." class="w-full text-sm rounded-lg border border-slate-200 p-3 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition outline-none">
+                            <h2 class="text-md font-semibold text-slate-900">Pending Registrations</h2>
+                            <p class="text-xs text-slate-500 mt-1">Authorize new accounts.</p>
                         </div>
-
-                        <div>
-                            <label for="user_id" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">Assign To Employee</label>
-                            <select id="user_id" name="user_id" required class="w-full text-sm rounded-lg border border-slate-200 p-3 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition outline-none">
-                                <option value="" disabled selected>Choose an employee...</option>
-                                @forelse($employees as $employee)
-                                    <option value="{{ $employee->id }}">{{ $employee->name }}</option>
-                                @empty
-                                    <option value="" disabled>No active employees registered yet.</option>
-                                @endforelse
-                            </select>
+                        <div class="bg-blue-100 text-blue-700 py-1 px-2 rounded-full text-xs font-bold">
+                            {{ $pendingUsers->count() }}
                         </div>
-
-                        <div>
-                            <label for="priority" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">Priority Classification</label>
-                            <select id="priority" name="priority" required class="w-full text-sm rounded-lg border border-slate-200 p-3 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition outline-none">
-                                <option value="Low">Low Priority</option>
-                                <option value="Medium" selected>Medium Priority</option>
-                                <option value="High">High Priority</option>
-                            </select>
-                        </div>
-
-                        <!-- Detailed Task Description Field -->
-                        <div>
-                            <label for="description" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">Task Requirements & Description</label>
-                            <textarea id="description" name="description" required rows="4" placeholder="Detail the guidelines, key dependencies, and expected deliverables for the employee..." class="w-full text-sm rounded-lg border border-slate-200 p-3 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition outline-none leading-relaxed"></textarea>
-                        </div>
-
-                        <button type="submit" class="w-full bg-slate-950 hover:bg-slate-800 text-white font-medium text-sm py-3 rounded-lg shadow-sm transition flex items-center justify-center gap-2 cursor-pointer">
-                            Deploy Task &rarr;
-                        </button>
-                    </form>
-                </div>
-            </section>
-
-            <!-- SECTION 2: PROJECT SPECIFICATION PORTAL -->
-            <section class="lg:col-span-7 bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
-                <div class="p-6 border-b border-slate-100 bg-slate-50/50">
-                    <h2 class="text-md font-semibold text-slate-900">Project Brief & Guidelines</h2>
-                    <p class="text-xs text-slate-500 mt-1">Publish a comprehensive system walkthrough or roadmap (supports up to 2,000 words).</p>
-                </div>
-
-                <div class="p-6">
-                    <form action="{{ route('admin.project.update') }}" method="POST" class="space-y-4">
-                        @csrf
-                        <div>
-                            <label for="project_title" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">Brief Title</label>
-                            <input type="text" id="project_title" name="title" required value="{{ $project->title }}" class="w-full text-sm font-semibold rounded-lg border border-slate-200 p-3 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition outline-none">
-                        </div>
-
-                        <div>
-                            <label for="project_desc" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">Project Explanation / Specifications</label>
-                            <textarea id="project_desc" name="description" required rows="12" placeholder="Write up to 2,000 words explaining scope, architecture, design assets, and workflows..." class="w-full text-sm rounded-lg border border-slate-200 p-3 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition outline-none leading-relaxed" oninput="countWords()">{{ $project->description }}</textarea>
-                            <div class="flex justify-between text-xs text-slate-400 mt-2">
-                                <span>Markdown formatting can be added manually</span>
-                                <span id="word_counter">0 / 2000 Words</span>
+                    </div>
+    
+                    <div class="p-0">
+                        @if($pendingUsers->count() > 0)
+                            <div class="divide-y divide-slate-100">
+                                @foreach($pendingUsers as $user)
+                                    <div class="p-4 hover:bg-slate-50/50 transition">
+                                        <div class="flex justify-between items-start mb-3">
+                                            <div>
+                                                <div class="font-medium text-slate-900 text-sm">{{ $user->name }}</div>
+                                                <div class="text-xs text-slate-500">{{ $user->email }}</div>
+                                            </div>
+                                            <div class="text-xs font-medium text-slate-500 bg-slate-100 px-2 py-0.5 rounded">
+                                                Age: {{ $user->age }}
+                                            </div>
+                                        </div>
+                                        <div class="flex space-x-2">
+                                            <form action="{{ route('admin.users.approve', $user->id) }}" method="POST" class="flex-1">
+                                                @csrf
+                                                <button type="submit" class="w-full bg-emerald-50 text-emerald-600 hover:bg-emerald-500 hover:text-white border border-emerald-200 hover:border-emerald-500 px-3 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer text-center">
+                                                    Approve
+                                                </button>
+                                            </form>
+                                            <form action="{{ route('admin.users.reject', $user->id) }}" method="POST" class="flex-1">
+                                                @csrf
+                                                <button type="submit" class="w-full bg-red-50 text-red-600 hover:bg-red-500 hover:text-white border border-red-200 hover:border-red-500 px-3 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer text-center">
+                                                    Reject
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                @endforeach
                             </div>
-                        </div>
+                        @else
+                            <div class="p-8 text-center">
+                                <div class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-slate-100 text-slate-400 mb-3">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <h3 class="text-sm font-semibold text-slate-900">No Approvals</h3>
+                                <p class="text-xs text-slate-500 mt-1">All caught up.</p>
+                            </div>
+                        @endif
+                    </div>
+                </section>
+            </div>
 
-                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm px-5 py-2.5 rounded-lg shadow-sm transition cursor-pointer">
-                            Publish Project Brief
-                        </button>
-                    </form>
-                </div>
-            </section>
+            <!-- RIGHT COLUMN: MAIN FORMS -->
+            <div class="lg:col-span-8 space-y-8">
+                
+                <!-- SECTION 1: MANUAL WORKFLOW DIVISION PANEL -->
+                <section class="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
+                    <div class="p-6 border-b border-slate-100 bg-slate-50/50">
+                        <h2 class="text-md font-semibold text-slate-900">Task Allocation Engine</h2>
+                        <p class="text-xs text-slate-500 mt-1">Deploy tasks along with specifications directly to assigned employee containers.</p>
+                    </div>
+
+                    <div class="p-6">
+                        <form action="{{ route('tasks.store') }}" method="POST" class="space-y-5">
+                            @csrf
+                            <div>
+                                <label for="title" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">Task Title</label>
+                                <input type="text" id="title" name="title" required placeholder="Describe task objective..." class="w-full text-sm rounded-lg border border-slate-200 p-3 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition outline-none">
+                            </div>
+
+                            <div>
+                                <label for="user_id" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">Assign To Employee</label>
+                                <select id="user_id" name="user_id" required class="w-full text-sm rounded-lg border border-slate-200 p-3 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition outline-none">
+                                    <option value="" disabled selected>Choose an employee...</option>
+                                    @forelse($employees as $employee)
+                                        <option value="{{ $employee->id }}">{{ $employee->name }}</option>
+                                    @empty
+                                        <option value="" disabled>No active employees registered yet.</option>
+                                    @endforelse
+                                </select>
+                            </div>
+
+                            <div>
+                                <label for="priority" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">Priority Classification</label>
+                                <select id="priority" name="priority" required class="w-full text-sm rounded-lg border border-slate-200 p-3 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition outline-none">
+                                    <option value="Low">Low Priority</option>
+                                    <option value="Medium" selected>Medium Priority</option>
+                                    <option value="High">High Priority</option>
+                                </select>
+                            </div>
+
+                            <!-- Detailed Task Description Field -->
+                            <div>
+                                <label for="description" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">Task Requirements & Description</label>
+                                <textarea id="description" name="description" required rows="4" placeholder="Detail the guidelines, key dependencies, and expected deliverables for the employee..." class="w-full text-sm rounded-lg border border-slate-200 p-3 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition outline-none leading-relaxed"></textarea>
+                            </div>
+
+                            <button type="submit" class="w-full bg-slate-950 hover:bg-slate-800 text-white font-medium text-sm py-3 rounded-lg shadow-sm transition flex items-center justify-center gap-2 cursor-pointer">
+                                Deploy Task &rarr;
+                            </button>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- SECTION 2: PROJECT SPECIFICATION PORTAL -->
+                <section class="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
+                    <div class="p-6 border-b border-slate-100 bg-slate-50/50">
+                        <h2 class="text-md font-semibold text-slate-900">Project Brief & Guidelines</h2>
+                        <p class="text-xs text-slate-500 mt-1">Publish a comprehensive system walkthrough or roadmap (supports up to 2,000 words).</p>
+                    </div>
+
+                    <div class="p-6">
+                        <form action="{{ route('admin.project.update') }}" method="POST" class="space-y-4">
+                            @csrf
+                            <div>
+                                <label for="project_title" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">Brief Title</label>
+                                <input type="text" id="project_title" name="title" required value="{{ $project->title }}" class="w-full text-sm font-semibold rounded-lg border border-slate-200 p-3 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition outline-none">
+                            </div>
+
+                            <div>
+                                <label for="project_desc" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">Project Explanation / Specifications</label>
+                                <textarea id="project_desc" name="description" required rows="12" placeholder="Write up to 2,000 words explaining scope, architecture, design assets, and workflows..." class="w-full text-sm rounded-lg border border-slate-200 p-3 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition outline-none leading-relaxed" oninput="countWords()">{{ $project->description }}</textarea>
+                                <div class="flex justify-between text-xs text-slate-400 mt-2">
+                                    <span>Markdown formatting can be added manually</span>
+                                    <span id="word_counter">0 / 2000 Words</span>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm px-5 py-2.5 rounded-lg shadow-sm transition cursor-pointer">
+                                Publish Project Brief
+                            </button>
+                        </form>
+                    </div>
+                </section>
+
+            </div>
 
         </div>
+
     </main>
 
     <script>

@@ -83,6 +83,9 @@ class UserController extends Controller
     {
         // Fetch approved employees so admin can assign tasks to them
         $employees = User::where('role', 'employee')->where('status', 'approved')->get();
+        
+        // Fetch pending employees for approval
+        $pendingUsers = User::where('status', 'pending')->get();
 
         // Fetch project or fallback to default layout
         $project = Project::find(1) ?? new Project([
@@ -90,6 +93,24 @@ class UserController extends Controller
             'description' => 'Add your comprehensive breakdown of the core project guidelines here (supports up to 2,000 words)...'
         ]);
 
-        return view('admin', compact('employees', 'project'));
+        return view('admin', compact('employees', 'project', 'pendingUsers'));
+    }
+
+    public function approve(User $user)
+    {
+        if ($user->status === 'pending') {
+            $user->update(['status' => 'approved']);
+            return back()->with('success', "Employee {$user->name} has been approved.");
+        }
+        return back()->withErrors(['error' => 'Invalid action.']);
+    }
+
+    public function reject(User $user)
+    {
+        if ($user->status === 'pending') {
+            $user->update(['status' => 'rejected']);
+            return back()->with('success', "Employee {$user->name} has been rejected.");
+        }
+        return back()->withErrors(['error' => 'Invalid action.']);
     }
 }
