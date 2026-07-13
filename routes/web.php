@@ -22,7 +22,6 @@ Route::get('/home', function () {
 Route::view('register', 'register')->name('register');
 Route::post('registerSave', [UserController::class, 'registration'])->name('registerSave');
 
-
 Route::view('login', 'login')->name('login');
 Route::post('login', [UserController::class, 'Login'])->name('loginMatch'); 
 
@@ -42,4 +41,4 @@ Route::post('admin/users/{user}/reject', [UserController::class, 'reject'])->nam
 
 Route::post('logout', [UserController::class, 'logout'])->name('logout');
 
- 
+        

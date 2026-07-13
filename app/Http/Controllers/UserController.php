@@ -28,7 +28,6 @@ class UserController extends Controller
             return redirect()->route('login');
         }
     }
-
     public function Login(Request $request)
     {
         $credentials = $request->validate([
