@@ -41,4 +41,17 @@ Route::post('admin/users/{user}/reject', [UserController::class, 'reject'])->nam
 
 Route::post('logout', [UserController::class, 'logout'])->name('logout');
 
-        
+// Redirect home to backlog
+Route::get('/', function () {
+    return redirect()->route('backlog');
+});
+
+// Backlog Page
+Route::get('/backlog', function () {
+    return view('backlog');
+})->name('backlog');
+
+// Scrum Page
+Route::get('/scrum', function () {
+    return view('scrum');
+})->name('scrum');        
