@@ -1,5 +1,3 @@
-
-  
 <!DOCTYPE html>
 <html lang="en" class="h-full bg-slate-50">
 <head>
