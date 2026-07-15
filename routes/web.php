@@ -54,4 +54,9 @@ Route::get('/backlog', function () {
 // Scrum Page
 Route::get('/scrum', function () {
     return view('scrum');
-})->name('scrum');        
+})->name('scrum');
+
+// Sprint Page
+Route::get('/sprint', function () {
+    return view('Sprint');
+})->name('sprint');        

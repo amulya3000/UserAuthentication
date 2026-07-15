@@ -11,11 +11,22 @@
 
     <!-- Sidebar -->
     <aside class="w-64 bg-white border-r border-slate-200 p-4 hidden md:flex flex-col gap-6">
+        <!-- Back to Dashboard -->
+        <a href="{{ route('dashboard') }}" class="flex items-center justify-center gap-2 px-4 py-2 bg-slate-900 text-white rounded-lg text-sm font-semibold shadow-sm hover:bg-slate-800 transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+            </svg>
+            Back to Dashboard
+        </a>
+
         <div>
             <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-400">Planning</h2>
             <nav class="mt-2 flex flex-col gap-1">
                 <a href="{{ route('backlog') }}" class="flex items-center gap-2 px-3 py-2 rounded text-sm font-medium text-slate-600 hover:bg-slate-100 transition-colors">
                     📋 Backlog
+                </a>
+                <a href="{{ route('sprint') }}" class="flex items-center gap-2 px-3 py-2 rounded text-sm font-medium text-slate-600 hover:bg-slate-100 transition-colors">
+                    🏃 Sprints
                 </a>
                 <a href="{{ route('scrum') }}" class="flex items-center gap-2 px-3 py-2 rounded text-sm font-medium bg-blue-50 text-blue-600">
                     📊 Scrum Board
