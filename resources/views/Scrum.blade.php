@@ -59,36 +59,28 @@
                 <div class="bg-slate-100 p-4 rounded-lg min-h-[450px]">
                     <h3 class="text-xs font-bold text-slate-500 uppercase mb-4 flex items-center justify-between">
                         <span>To Do</span>
-                        <span class="bg-slate-200 text-slate-600 px-2 py-0.5 rounded-full text-[10px]">3</span>
+                        <span class="bg-slate-200 text-slate-600 px-2 py-0.5 rounded-full text-[10px]">{{ $sprintBacklogs->where('status', 'To Do')->count() }}</span>
                     </h3>
                     
                     <div class="flex flex-col gap-3">
-                        <!-- Card 1 -->
+                        @forelse($sprintBacklogs->where('status', 'To Do') as $item)
                         <div class="bg-white p-4 rounded-md shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
-                            <p class="text-sm font-medium text-slate-800 mb-2">User Account Management</p>
+                            <p class="text-sm font-medium text-slate-800 mb-2">{{ $item->title }}</p>
                             <div class="flex justify-between items-center">
-                                <span class="text-[10px] font-mono text-slate-400 font-semibold">CREAT-1</span>
-                                <span class="text-[10px] bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded">Story</span>
+                                <span class="text-[10px] font-mono text-slate-400 font-semibold">{{ $item->task_id }}</span>
+                                <span class="text-[10px] px-1.5 py-0.5 rounded
+                                    {{ $item->type == 'Story' ? 'bg-blue-50 text-blue-600' : '' }}
+                                    {{ $item->type == 'Task' ? 'bg-purple-50 text-purple-600' : '' }}
+                                    {{ $item->type == 'Bug' ? 'bg-red-50 text-red-600' : '' }}">
+                                    {{ $item->type }}
+                                </span>
                             </div>
                         </div>
-
-                        <!-- Card 2 -->
-                        <div class="bg-white p-4 rounded-md shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
-                            <p class="text-sm font-medium text-slate-800 mb-2">Design database schema</p>
-                            <div class="flex justify-between items-center">
-                                <span class="text-[10px] font-mono text-slate-400 font-semibold">CREAT-2</span>
-                                <span class="text-[10px] bg-purple-50 text-purple-600 px-1.5 py-0.5 rounded">Task</span>
-                            </div>
+                        @empty
+                        <div class="flex flex-col gap-2 justify-center items-center h-48 border-2 border-dashed border-slate-300 rounded-md">
+                            <span class="text-xs text-slate-400 font-medium">No tasks</span>
                         </div>
-
-                        <!-- Card 3 -->
-                        <div class="bg-white p-4 rounded-md shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
-                            <p class="text-sm font-medium text-slate-800 mb-2">Fix login button layout issues</p>
-                            <div class="flex justify-between items-center">
-                                <span class="text-[10px] font-mono text-slate-400 font-semibold">CREAT-3</span>
-                                <span class="text-[10px] bg-red-50 text-red-600 px-1.5 py-0.5 rounded">Bug</span>
-                            </div>
-                        </div>
+                        @endforelse
                     </div>
                 </div>
 
@@ -96,11 +88,28 @@
                 <div class="bg-slate-100 p-4 rounded-lg min-h-[450px]">
                     <h3 class="text-xs font-bold text-slate-500 uppercase mb-4 flex items-center justify-between">
                         <span>In Progress</span>
-                        <span class="bg-slate-200 text-slate-600 px-2 py-0.5 rounded-full text-[10px]">0</span>
+                        <span class="bg-slate-200 text-slate-600 px-2 py-0.5 rounded-full text-[10px]">{{ $sprintBacklogs->where('status', 'In Progress')->count() }}</span>
                     </h3>
                     
-                    <div class="flex flex-col gap-2 justify-center items-center h-48 border-2 border-dashed border-slate-300 rounded-md">
-                        <span class="text-xs text-slate-400 font-medium">Drag tasks here</span>
+                    <div class="flex flex-col gap-3">
+                        @forelse($sprintBacklogs->where('status', 'In Progress') as $item)
+                        <div class="bg-white p-4 rounded-md shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
+                            <p class="text-sm font-medium text-slate-800 mb-2">{{ $item->title }}</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-[10px] font-mono text-slate-400 font-semibold">{{ $item->task_id }}</span>
+                                <span class="text-[10px] px-1.5 py-0.5 rounded
+                                    {{ $item->type == 'Story' ? 'bg-blue-50 text-blue-600' : '' }}
+                                    {{ $item->type == 'Task' ? 'bg-purple-50 text-purple-600' : '' }}
+                                    {{ $item->type == 'Bug' ? 'bg-red-50 text-red-600' : '' }}">
+                                    {{ $item->type }}
+                                </span>
+                            </div>
+                        </div>
+                        @empty
+                        <div class="flex flex-col gap-2 justify-center items-center h-48 border-2 border-dashed border-slate-300 rounded-md">
+                            <span class="text-xs text-slate-400 font-medium">No tasks</span>
+                        </div>
+                        @endforelse
                     </div>
                 </div>
 
@@ -108,11 +117,28 @@
                 <div class="bg-slate-100 p-4 rounded-lg min-h-[450px]">
                     <h3 class="text-xs font-bold text-slate-500 uppercase mb-4 flex items-center justify-between">
                         <span>Done</span>
-                        <span class="bg-slate-200 text-slate-600 px-2 py-0.5 rounded-full text-[10px]">0</span>
+                        <span class="bg-slate-200 text-slate-600 px-2 py-0.5 rounded-full text-[10px]">{{ $sprintBacklogs->where('status', 'Done')->count() }}</span>
                     </h3>
                     
-                    <div class="flex flex-col gap-2 justify-center items-center h-48 border-2 border-dashed border-slate-300 rounded-md">
-                        <span class="text-xs text-slate-400 font-medium">No tasks completed yet</span>
+                    <div class="flex flex-col gap-3">
+                        @forelse($sprintBacklogs->where('status', 'Done') as $item)
+                        <div class="bg-white p-4 rounded-md shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
+                            <p class="text-sm font-medium text-slate-800 mb-2">{{ $item->title }}</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-[10px] font-mono text-slate-400 font-semibold">{{ $item->task_id }}</span>
+                                <span class="text-[10px] px-1.5 py-0.5 rounded
+                                    {{ $item->type == 'Story' ? 'bg-blue-50 text-blue-600' : '' }}
+                                    {{ $item->type == 'Task' ? 'bg-purple-50 text-purple-600' : '' }}
+                                    {{ $item->type == 'Bug' ? 'bg-red-50 text-red-600' : '' }}">
+                                    {{ $item->type }}
+                                </span>
+                            </div>
+                        </div>
+                        @empty
+                        <div class="flex flex-col gap-2 justify-center items-center h-48 border-2 border-dashed border-slate-300 rounded-md">
+                            <span class="text-xs text-slate-400 font-medium">No tasks completed yet</span>
+                        </div>
+                        @endforelse
                     </div>
                 </div>
 
