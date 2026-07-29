@@ -51,26 +51,55 @@
                     <h1 class="text-2xl font-bold text-slate-900 mt-1">Sprints Timeline</h1>
                 </div>
                 
-                <button class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium px-4 py-2 rounded-md text-sm transition-colors flex items-center gap-2">
-                    <span>➕ Start Sprint</span>
-                </button>
+                <form action="{{ route('sprints.store') }}" method="POST" class="flex items-center gap-2">
+                    @csrf
+                    <input type="text" name="name" placeholder="Sprint Name" required class="px-3 py-1.5 border border-slate-200 rounded-md text-sm">
+                    <button type="submit" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium px-4 py-2 rounded-md text-sm transition-colors flex items-center gap-2">
+                        <span>➕ Start Sprint</span>
+                    </button>
+                </form>
             </div>
 
-          
-            <div class="bg-white rounded-lg border border-slate-200 shadow-sm p-6 mb-8">
-                <div class="flex justify-between items-center mb-4">
-                    <div class="flex items-center gap-3">
-                        <h2 class="text-lg font-bold text-slate-900">Sprint 1</h2>
-                        <span class="bg-blue-100 text-blue-700 text-xs px-2 py-0.5 rounded-full font-semibold">Active Sprint</span>
-                    </div>
+            @forelse($sprints as $sprint)
+            <div class="bg-white rounded-lg border {{ $sprint->is_active ? 'border-blue-400' : 'border-slate-200' }} shadow-sm p-6 mb-8">
+                <form action="{{ route('sprints.update', $sprint->id) }}" method="POST" class="mb-4">
+                    @csrf
+                    @method('PUT')
                     
-                    <div class="text-sm text-slate-500 font-medium bg-slate-100 px-3 py-1 rounded-md border border-slate-200 flex items-center gap-2">
-                        <span>🗓️</span> Jul 14 - Jul 28
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-3">
+                            <h2 class="text-lg font-bold text-slate-900">{{ $sprint->name }}</h2>
+                            @if($sprint->is_active)
+                                <span class="bg-blue-100 text-blue-700 text-xs px-2 py-0.5 rounded-full font-semibold">Active Sprint</span>
+                            @endif
+                            <label class="flex items-center gap-1 text-sm text-slate-600 ml-4 cursor-pointer">
+                                <input type="checkbox" name="is_active" value="1" {{ $sprint->is_active ? 'checked' : '' }} onchange="this.form.submit()">
+                                Set Active
+                            </label>
+                        </div>
+                        
+                        <div class="flex gap-2">
+                            <input type="date" name="start_date" value="{{ $sprint->start_date }}" class="text-sm px-2 py-1 border border-slate-200 rounded-md">
+                            <span class="text-slate-400">-</span>
+                            <input type="date" name="end_date" value="{{ $sprint->end_date }}" class="text-sm px-2 py-1 border border-slate-200 rounded-md">
+                        </div>
                     </div>
-                </div>
+
+                    <div class="mb-4">
+                        <textarea name="notes" placeholder="Add sprint notes here..." class="w-full text-sm px-3 py-2 border border-slate-200 rounded-md bg-slate-50 focus:bg-white" rows="2">{{ $sprint->notes }}</textarea>
+                    </div>
+
+                    <div class="flex justify-end">
+                        <button type="submit" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-md font-medium transition-colors">
+                            Save Sprint Details
+                        </button>
+                    </div>
+                </form>
+                
+                <h3 class="text-xs font-bold text-slate-500 uppercase mb-2">Backlog ({{ $sprint->backlogs->count() }} issues)</h3>
                 
                 <div class="divide-y divide-slate-100 border border-slate-100 rounded-md mb-4">
-                    @forelse($sprintBacklogs as $item)
+                    @forelse($sprint->backlogs as $item)
                         <div class="flex items-center justify-between py-3 hover:bg-slate-50 px-3 transition-colors">
                             <div class="flex items-center gap-3">
                                 <span class="text-xs font-mono bg-slate-100 px-2 py-1 rounded text-slate-600 font-semibold">{{ $item->task_id }}</span>
@@ -88,7 +117,7 @@
                     @endforelse
                 </div>
 
-                <form action="{{ route('sprint.store') }}" method="POST" class="mt-4 flex gap-2">
+                <form action="{{ route('sprint.issue.store', $sprint->id) }}" method="POST" class="mt-4 flex gap-2">
                     @csrf
                     <input 
                         type="text" 
@@ -107,35 +136,11 @@
                     </button>
                 </form>
             </div>
-
-            <!-- Sprint 2 (Planned) -->
-            <div class="bg-white rounded-lg border border-slate-200 shadow-sm p-6 mb-8 border-l-4 border-l-slate-300">
-                <div class="flex justify-between items-center mb-4">
-                    <div class="flex items-center gap-3">
-                        <h2 class="text-lg font-bold text-slate-800">Sprint 2</h2>
-                        <span class="bg-slate-100 text-slate-600 text-xs px-2 py-0.5 rounded-full font-semibold">Planned</span>
-                    </div>
-                    <!-- Month and Day Timeline Format -->
-                    <div class="text-sm text-slate-500 font-medium bg-slate-50 px-3 py-1 rounded-md border border-slate-200 flex items-center gap-2">
-                        <span>🗓️</span> Jul 29 - Aug 12
-                    </div>
-                </div>
-                
-                <div class="divide-y divide-slate-100 border border-slate-100 rounded-md bg-slate-50/50">
-                    <!-- Issue 3 -->
-                    <div class="flex items-center justify-between py-3 hover:bg-white px-3 transition-colors">
-                        <div class="flex items-center gap-3">
-                            <span class="text-xs font-mono bg-slate-100 px-2 py-1 rounded text-slate-600 font-semibold">CREAT-3</span>
-                            <span class="text-sm text-slate-700 font-medium">Fix login button layout issues</span>
-                        </div>
-                        <span class="text-xs bg-red-50 text-red-600 px-2.5 py-0.5 rounded-full font-medium">Bug</span>
-                    </div>
-                </div>
-                
-                <div class="mt-4 flex gap-2">
-                    <p class="text-xs text-slate-400">Add form moved to active sprint.</p>
-                </div>
+            @empty
+            <div class="text-center py-12">
+                <p class="text-slate-500 mb-4">No sprints created yet.</p>
             </div>
+            @endforelse
 
         </div>
     </main>

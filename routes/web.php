@@ -52,7 +52,9 @@ Route::delete('/backlog/{id}', [BacklogController::class, 'destroy'])->name('bac
 
 
 Route::get('/sprint', [BacklogController::class, 'sprintIndex'])->name('sprint');
-Route::post('/sprint', [BacklogController::class, 'storeSprintItem'])->name('sprint.store');
+Route::post('/sprints', [BacklogController::class, 'storeSprint'])->name('sprints.store');
+Route::put('/sprints/{id}', [BacklogController::class, 'updateSprint'])->name('sprints.update');
+Route::post('/sprints/{sprint_id}/issues', [BacklogController::class, 'storeSprintItem'])->name('sprint.issue.store');
 Route::post('/scrum/{id}/status', [BacklogController::class, 'updateStatus'])->name('scrum.status');
 
 Route::get('/scrum', [BacklogController::class, 'scrumIndex'])->name('scrum');
