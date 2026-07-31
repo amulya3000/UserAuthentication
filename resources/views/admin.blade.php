@@ -259,6 +259,33 @@
                     </div>
                 </section>
 
+                <!-- SECTION 3: ADMIN NOTES BROADCAST -->
+                <section class="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
+                    <div class="p-6 border-b border-slate-100 bg-emerald-50/50">
+                        <div class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                            </svg>
+                            <h2 class="text-md font-semibold text-slate-900">Admin Notes Broadcast</h2>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-1">Write notes that will be visible to all employees in their dashboard under "Admin Notes".</p>
+                    </div>
+                    <div class="p-6">
+                        <textarea id="adminNotesInput" rows="6"
+                            class="w-full text-sm rounded-lg border border-slate-200 p-3 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition outline-none leading-relaxed resize-y"
+                            placeholder="Write notes for all employees — announcements, reminders, updates..."></textarea>
+                        <div class="flex items-center gap-3 mt-3">
+                            <button onclick="saveAdminNotes()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-sm px-5 py-2.5 rounded-lg shadow-sm transition cursor-pointer">
+                                Broadcast Notes
+                            </button>
+                            <button onclick="clearAdminNotes()" class="bg-slate-100 hover:bg-slate-200 text-slate-600 font-medium text-sm px-4 py-2.5 rounded-lg transition cursor-pointer">
+                                Clear
+                            </button>
+                            <span id="adminNotesSavedMsg" class="text-xs text-emerald-600 hidden">&#10003; Broadcast saved!</span>
+                        </div>
+                    </div>
+                </section>
+
             </div>
 
         </div>
@@ -277,7 +304,29 @@
                 counter.classList.remove('text-red-500', 'font-semibold');
             }
         }
-        window.onload = countWords;
+
+        // Admin Notes Broadcast (stored in localStorage, readable by employees on the same device)
+        function saveAdminNotes() {
+            const notes = document.getElementById('adminNotesInput').value;
+            localStorage.setItem('admin_notes_broadcast', notes);
+            const msg = document.getElementById('adminNotesSavedMsg');
+            msg.classList.remove('hidden');
+            setTimeout(() => msg.classList.add('hidden'), 2500);
+        }
+
+        function clearAdminNotes() {
+            document.getElementById('adminNotesInput').value = '';
+            localStorage.removeItem('admin_notes_broadcast');
+        }
+
+        window.onload = function() {
+            countWords();
+            // Load existing admin notes into the textarea
+            const existingNotes = localStorage.getItem('admin_notes_broadcast');
+            if (existingNotes) {
+                document.getElementById('adminNotesInput').value = existingNotes;
+            }
+        };
     </script>
 </body>
 </html>

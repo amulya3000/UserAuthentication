@@ -87,6 +87,7 @@ class BacklogController extends Controller
             // Deactivate other sprints if this one becomes active
             Sprint::where('id', '!=', $id)->update(['is_active' => false]);
             $sprint->is_active = true;
+            $sprint->status = 'Active';
         }
 
         $sprint->start_date = $request->start_date;
@@ -133,13 +134,37 @@ class BacklogController extends Controller
 
     public function updateStatus(Request $request, $id) {
         $request->validate([
-            'status' => 'required|in:To Do,In Progress,Done'
+            'status' => 'required|in:To Do,In Progress,Done,On Hold,Cancelled'
         ]);
+
+        $backlog = DB::table('backlogs')->where('id', $id)->first();
 
         DB::table('backlogs')->where('id', $id)->update([
             'status' => $request->status,
             'updated_at' => now(),
         ]);
+
+        if ($backlog && $backlog->sprint_id) {
+            $sprint = Sprint::with('backlogs')->find($backlog->sprint_id);
+            if ($sprint) {
+                // Refresh relation
+                $sprint->load('backlogs');
+                $total = $sprint->backlogs->count();
+                $done = $sprint->backlogs->where('status', 'Done')->count();
+                
+                if ($total > 0 && $total === $done) {
+                    $sprint->update([
+                        'status' => 'Completed',
+                        'is_active' => false
+                    ]);
+                } else if ($sprint->status === 'Completed') {
+                    $sprint->update([
+                        'status' => 'Active',
+                        'is_active' => true
+                    ]);
+                }
+            }
+        }
 
         return redirect()->route('scrum')->with('success', 'Status updated successfully!');
     }

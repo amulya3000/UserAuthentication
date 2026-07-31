@@ -53,10 +53,10 @@
             </div>
 
             <!-- Board Columns Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-4 overflow-x-auto pb-4">
                 
                 <!-- Column 1: TO DO -->
-                <div class="bg-slate-100 p-4 rounded-lg min-h-[450px]">
+                <div class="bg-slate-100/50 p-3 rounded-lg min-h-[450px] min-w-[250px]">
                     <h3 class="text-xs font-bold text-slate-500 uppercase mb-4 flex items-center justify-between">
                         <span>To Do</span>
                         <span class="bg-slate-200 text-slate-600 px-2 py-0.5 rounded-full text-[10px]">{{ $sprintBacklogs->where('status', 'To Do')->count() }}</span>
@@ -64,79 +64,82 @@
                     
                     <div class="flex flex-col gap-3">
                         @forelse($sprintBacklogs->where('status', 'To Do') as $item)
-                        <div class="bg-white p-4 rounded-md shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
-                            <p class="text-sm font-medium text-slate-800 mb-2">{{ $item->title }}</p>
-                            <div class="flex justify-between items-center">
-                                <span class="text-[10px] font-mono text-slate-400 font-semibold">{{ $item->task_id }}</span>
-                                <span class="text-[10px] px-1.5 py-0.5 rounded
-                                    {{ $item->type == 'Story' ? 'bg-blue-50 text-blue-600' : '' }}
-                                    {{ $item->type == 'Task' ? 'bg-purple-50 text-purple-600' : '' }}
-                                    {{ $item->type == 'Bug' ? 'bg-red-50 text-red-600' : '' }}">
-                                    {{ $item->type }}
-                                </span>
-                            </div>
-                        </div>
+                        @include('components.scrum-card', ['item' => $item])
                         @empty
-                        <div class="flex flex-col gap-2 justify-center items-center h-48 border-2 border-dashed border-slate-300 rounded-md">
-                            <span class="text-xs text-slate-400 font-medium">No tasks</span>
+                        <div class="flex flex-col gap-2 justify-center items-center h-24 border-2 border-dashed border-slate-300 rounded-md">
+                            <span class="text-xs text-slate-400 font-medium">Empty</span>
                         </div>
                         @endforelse
                     </div>
                 </div>
 
                 <!-- Column 2: IN PROGRESS -->
-                <div class="bg-slate-100 p-4 rounded-lg min-h-[450px]">
-                    <h3 class="text-xs font-bold text-slate-500 uppercase mb-4 flex items-center justify-between">
+                <div class="bg-blue-50/50 p-3 rounded-lg min-h-[450px] min-w-[250px]">
+                    <h3 class="text-xs font-bold text-blue-500 uppercase mb-4 flex items-center justify-between">
                         <span>In Progress</span>
-                        <span class="bg-slate-200 text-slate-600 px-2 py-0.5 rounded-full text-[10px]">{{ $sprintBacklogs->where('status', 'In Progress')->count() }}</span>
+                        <span class="bg-blue-200 text-blue-700 px-2 py-0.5 rounded-full text-[10px]">{{ $sprintBacklogs->where('status', 'In Progress')->count() }}</span>
                     </h3>
                     
                     <div class="flex flex-col gap-3">
                         @forelse($sprintBacklogs->where('status', 'In Progress') as $item)
-                        <div class="bg-white p-4 rounded-md shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
-                            <p class="text-sm font-medium text-slate-800 mb-2">{{ $item->title }}</p>
-                            <div class="flex justify-between items-center">
-                                <span class="text-[10px] font-mono text-slate-400 font-semibold">{{ $item->task_id }}</span>
-                                <span class="text-[10px] px-1.5 py-0.5 rounded
-                                    {{ $item->type == 'Story' ? 'bg-blue-50 text-blue-600' : '' }}
-                                    {{ $item->type == 'Task' ? 'bg-purple-50 text-purple-600' : '' }}
-                                    {{ $item->type == 'Bug' ? 'bg-red-50 text-red-600' : '' }}">
-                                    {{ $item->type }}
-                                </span>
-                            </div>
-                        </div>
+                        @include('components.scrum-card', ['item' => $item])
                         @empty
-                        <div class="flex flex-col gap-2 justify-center items-center h-48 border-2 border-dashed border-slate-300 rounded-md">
-                            <span class="text-xs text-slate-400 font-medium">No tasks</span>
+                        <div class="flex flex-col gap-2 justify-center items-center h-24 border-2 border-dashed border-blue-200 rounded-md">
+                            <span class="text-xs text-blue-300 font-medium">Empty</span>
                         </div>
                         @endforelse
                     </div>
                 </div>
 
-                <!-- Column 3: DONE -->
-                <div class="bg-slate-100 p-4 rounded-lg min-h-[450px]">
-                    <h3 class="text-xs font-bold text-slate-500 uppercase mb-4 flex items-center justify-between">
+                <!-- Column 3: ON HOLD -->
+                <div class="bg-orange-50/50 p-3 rounded-lg min-h-[450px] min-w-[250px]">
+                    <h3 class="text-xs font-bold text-orange-500 uppercase mb-4 flex items-center justify-between">
+                        <span>On Hold</span>
+                        <span class="bg-orange-200 text-orange-700 px-2 py-0.5 rounded-full text-[10px]">{{ $sprintBacklogs->where('status', 'On Hold')->count() }}</span>
+                    </h3>
+                    
+                    <div class="flex flex-col gap-3">
+                        @forelse($sprintBacklogs->where('status', 'On Hold') as $item)
+                        @include('components.scrum-card', ['item' => $item])
+                        @empty
+                        <div class="flex flex-col gap-2 justify-center items-center h-24 border-2 border-dashed border-orange-200 rounded-md">
+                            <span class="text-xs text-orange-300 font-medium">Empty</span>
+                        </div>
+                        @endforelse
+                    </div>
+                </div>
+
+                <!-- Column 4: CANCELLED -->
+                <div class="bg-red-50/50 p-3 rounded-lg min-h-[450px] min-w-[250px]">
+                    <h3 class="text-xs font-bold text-red-500 uppercase mb-4 flex items-center justify-between">
+                        <span>Cancelled</span>
+                        <span class="bg-red-200 text-red-700 px-2 py-0.5 rounded-full text-[10px]">{{ $sprintBacklogs->where('status', 'Cancelled')->count() }}</span>
+                    </h3>
+                    
+                    <div class="flex flex-col gap-3">
+                        @forelse($sprintBacklogs->where('status', 'Cancelled') as $item)
+                        @include('components.scrum-card', ['item' => $item])
+                        @empty
+                        <div class="flex flex-col gap-2 justify-center items-center h-24 border-2 border-dashed border-red-200 rounded-md">
+                            <span class="text-xs text-red-300 font-medium">Empty</span>
+                        </div>
+                        @endforelse
+                    </div>
+                </div>
+
+                <!-- Column 5: DONE -->
+                <div class="bg-green-50/50 p-3 rounded-lg min-h-[450px] min-w-[250px]">
+                    <h3 class="text-xs font-bold text-green-500 uppercase mb-4 flex items-center justify-between">
                         <span>Done</span>
-                        <span class="bg-slate-200 text-slate-600 px-2 py-0.5 rounded-full text-[10px]">{{ $sprintBacklogs->where('status', 'Done')->count() }}</span>
+                        <span class="bg-green-200 text-green-700 px-2 py-0.5 rounded-full text-[10px]">{{ $sprintBacklogs->where('status', 'Done')->count() }}</span>
                     </h3>
                     
                     <div class="flex flex-col gap-3">
                         @forelse($sprintBacklogs->where('status', 'Done') as $item)
-                        <div class="bg-white p-4 rounded-md shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
-                            <p class="text-sm font-medium text-slate-800 mb-2">{{ $item->title }}</p>
-                            <div class="flex justify-between items-center">
-                                <span class="text-[10px] font-mono text-slate-400 font-semibold">{{ $item->task_id }}</span>
-                                <span class="text-[10px] px-1.5 py-0.5 rounded
-                                    {{ $item->type == 'Story' ? 'bg-blue-50 text-blue-600' : '' }}
-                                    {{ $item->type == 'Task' ? 'bg-purple-50 text-purple-600' : '' }}
-                                    {{ $item->type == 'Bug' ? 'bg-red-50 text-red-600' : '' }}">
-                                    {{ $item->type }}
-                                </span>
-                            </div>
-                        </div>
+                        @include('components.scrum-card', ['item' => $item])
                         @empty
-                        <div class="flex flex-col gap-2 justify-center items-center h-48 border-2 border-dashed border-slate-300 rounded-md">
-                            <span class="text-xs text-slate-400 font-medium">No tasks completed yet</span>
+                        <div class="flex flex-col gap-2 justify-center items-center h-24 border-2 border-dashed border-green-200 rounded-md">
+                            <span class="text-xs text-green-300 font-medium">Empty</span>
                         </div>
                         @endforelse
                     </div>
