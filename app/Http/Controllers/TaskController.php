@@ -16,9 +16,10 @@ class TaskController extends Controller
         }
 
         $data = $request->validate([
-            'title' => 'required|string|max:255',
-            'user_id' => 'required|exists:users,id',
-            'priority' => 'required|in:Low,Medium,High',
+            'title'       => 'required|string|max:255',
+            'description' => 'nullable|string|max:5000',
+            'user_id'     => 'required|exists:users,id',
+            'priority'    => 'required|in:Low,Medium,High',
         ]);
 
         Task::create($data);
@@ -33,7 +34,7 @@ class TaskController extends Controller
         }
 
         $request->validate([
-            'status' => 'required|in:To Do, In Progress, Completed'
+            'status' => 'required|in:To Do,In Progress,Completed'
         ]);
 
         $task->update(['status' => $request->status]);
