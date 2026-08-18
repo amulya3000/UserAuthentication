@@ -13,25 +13,26 @@ class UserController extends Controller
     public function registration(Request $request)
     {
         $data = $request->validate([
-            'name' => 'required',
-            'age' => 'required|integer|min:1|max:120',
-            'role' => 'required|string|in:admin,employee',
-            'email' => 'required|email',
-            'password' => 'required|confirmed',
+            'name'     => 'required',
+            'age'      => 'required|integer|min:1|max:120',
+            'role'     => 'required|string|in:admin,employee',
+            'email'    => 'required|email|unique:users,email',
+            'password' => 'required|confirmed|min:8',
         ]);
 
         $data['password'] = Hash::make($data['password']);
-        $data['status'] = $data['role'] === 'employee' ? 'pending' : 'approved';
+        $data['status']   = $data['role'] === 'employee' ? 'pending' : 'approved';
 
         $user = User::create($data);
         if ($user) {
-            return redirect()->route('login');
+            return redirect()->route('login')->with('success', 'Registration successful! Please wait for admin approval.' );
         }
     }
+
     public function Login(Request $request)
     {
         $credentials = $request->validate([
-            'email' => 'required|email',
+            'email'    => 'required|email',
             'password' => 'required',
         ]);
 
@@ -45,7 +46,12 @@ class UserController extends Controller
 
             if ($user->status === 'rejected') {
                 Auth::logout();
-                return back()->withErrors(['email' => 'Your registration was rejected.']);
+                return back()->withErrors(['email' => 'Your registration was rejected by the admin.']);
+            }
+
+            if ($user->status === 'deactivated') {
+                Auth::logout();
+                return back()->withErrors(['email' => 'Your account has been deactivated. Contact your admin.']);
             }
 
             $request->session()->regenerate();
@@ -61,9 +67,8 @@ class UserController extends Controller
     {
         $tasks = Task::where('user_id', Auth::id())->get();
 
-      
         $project = Project::find(1) ?? new Project([
-            'title' => 'Core System Guidelines',
+            'title'       => 'Core System Guidelines',
             'description' => 'The admin has not posted project details yet.'
         ]);
 
@@ -80,23 +85,40 @@ class UserController extends Controller
 
     public function index()
     {
-        // Fetch approved employees so admin can assign tasks to them
-        $employees = User::where('role', 'employee')->where('status', 'approved')->get();
-        
-        // Fetch pending employees for approval
+        $employees    = User::where('role', 'employee')->where('status', 'approved')->get();
         $pendingUsers = User::where('status', 'pending')->get();
+        $allUsers     = User::orderBy('created_at', 'desc')->get();
 
-        // Fetch project or fallback to default layout
         $project = Project::find(1) ?? new Project([
-            'title' => 'Project System Roadmap',
-            'description' => 'Add your comprehensive breakdown of the core project guidelines here (supports up to 2,000 words)...'
+            'title'       => 'Project System Roadmap',
+            'description' => 'Add your comprehensive breakdown of the core project guidelines here...'
         ]);
 
-        return view('admin', compact('employees', 'project', 'pendingUsers'));
+        // Workspace stats: per employee task counts
+        $workspaceStats = User::where('role', 'employee')
+            ->where('status', 'approved')
+            ->with(['tasks'])
+            ->get()
+            ->map(function ($emp) {
+                return [
+                    'id'         => $emp->id,
+                    'name'       => $emp->name,
+                    'email'      => $emp->email,
+                    'todo'       => $emp->tasks->where('status', 'To Do')->count(),
+                    'inprogress' => $emp->tasks->where('status', 'In Progress')->count(),
+                    'completed'  => $emp->tasks->where('status', 'Completed')->count(),
+                    'total'      => $emp->tasks->count(),
+                ];
+            });
+
+        return view('admin', compact('employees', 'project', 'pendingUsers', 'allUsers', 'workspaceStats'));
     }
 
     public function approve(User $user)
     {
+        if (!Auth::check() || Auth::user()->role !== 'admin') {
+            abort(403, 'Unauthorized.');
+        }
         if ($user->status === 'pending') {
             $user->update(['status' => 'approved']);
             return back()->with('success', "Employee {$user->name} has been approved.");
@@ -106,10 +128,53 @@ class UserController extends Controller
 
     public function reject(User $user)
     {
+        if (!Auth::check() || Auth::user()->role !== 'admin') {
+            abort(403, 'Unauthorized.');
+        }
         if ($user->status === 'pending') {
             $user->update(['status' => 'rejected']);
             return back()->with('success', "Employee {$user->name} has been rejected.");
         }
         return back()->withErrors(['error' => 'Invalid action.']);
+    }
+
+    public function changeRole(Request $request, User $user)
+    {
+        if (Auth::user()->role !== 'admin') {
+            abort(403, 'Unauthorized.');
+        }
+
+        // Prevent admin from changing their own role
+        if ($user->id === Auth::id()) {
+            return back()->withErrors(['error' => 'You cannot change your own role.']);
+        }
+
+        $request->validate([
+            'role' => 'required|in:admin,employee',
+        ]);
+
+        $user->update(['role' => $request->role]);
+        return back()->with('success', "{$user->name}'s role updated to {$request->role}.");
+    }
+
+    public function deactivate(User $user)
+    {
+        if (Auth::user()->role !== 'admin') {
+            abort(403, 'Unauthorized.');
+        }
+        if ($user->id === Auth::id()) {
+            return back()->withErrors(['error' => 'You cannot deactivate your own account.']);
+        }
+        $user->update(['status' => 'deactivated']);
+        return back()->with('success', "{$user->name}'s account has been deactivated.");
+    }
+
+    public function reactivate(User $user)
+    {
+        if (Auth::user()->role !== 'admin') {
+            abort(403, 'Unauthorized.');
+        }
+        $user->update(['status' => 'approved']);
+        return back()->with('success', "{$user->name}'s account has been reactivated.");
     }
 }
