@@ -16,19 +16,14 @@ class ValidUser
      */
     public function handle(Request $request, Closure $next): Response
     {
-        echo "<h3 class='text-sucess'>We are now in ValidUser Middleware.</h3>";
-        
         if (!Auth::check()) {
-            return redirect()->route('login')->with('error', 'Please log in.');
-        } 
-        
-       if($request ->is('admin')&& Auth::user()->role !== 'admin'){
-        return redirect()->route('dashboard')->with('error', 'You do not have admin access.');
-       }
-       return $next($request);
-        
+            return redirect()->route('login')->with('error', 'Please log in to continue.');
+        }
 
-        
-    }  
-    
+        if ($request->is('admin') && Auth::user()->role !== 'admin') {
+            return redirect()->route('dashboard')->with('error', 'You do not have admin access.');
+        }
+
+        return $next($request);
+    }
 }
