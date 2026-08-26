@@ -8,9 +8,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    --purple:#7B68EE;
-    --purple-dark:#5E4ED8;
-    --purple-light:#EFEBFF;
+    --purple:#10b981;
+    --purple-dark:#047857;
+    --purple-light:#ecfdf5;
     --blue:#0C66E4;
     --blue-light:#E9F2FF;
     --green:#1F9D55;
@@ -22,9 +22,9 @@
     --sidebar:#1B1A28;
     --sidebar-hover:#2A2940;
     --sidebar-text:#A9A7BD;
-    --bg:#F6F6FA;
+    --bg:#f8fafc;
     --card:#FFFFFF;
-    --border:#E7E6EF;
+    --border:#e2e8f0;
     --ink:#1F1E2B;
     --ink-soft:#6F6E81;
     --radius:10px;
