@@ -3,8 +3,8 @@
     <div class="flex justify-between items-center">
         <span class="text-[10px] font-mono text-slate-400 font-semibold">{{ $item->task_id }}</span>
         <span class="text-[10px] px-1.5 py-0.5 rounded
-            {{ $item->type == 'Story' ? 'bg-blue-50 text-blue-600' : '' }}
-            {{ $item->type == 'Task' ? 'bg-purple-50 text-purple-600' : '' }}
+            {{ $item->type == 'Story' ? 'bg-emerald-50 text-emerald-600' : '' }}
+            {{ $item->type == 'Task' ? 'bg-emerald-50 text-emerald-600' : '' }}
             {{ $item->type == 'Bug' ? 'bg-red-50 text-red-600' : '' }}">
             {{ $item->type }}
         </span>
