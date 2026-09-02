@@ -10,7 +10,7 @@
 
     <!-- Sidebar -->
     <aside class="w-64 bg-white border-r border-slate-200 p-4 hidden md:flex flex-col gap-6">
-        <a href="{{ route('dashboard') }}" class="flex items-center justify-center gap-2 px-4 py-2 bg-slate-900 text-white rounded-lg text-sm font-semibold shadow-sm hover:bg-slate-800 transition-colors">
+        <a href="{{ route('dashboard') }}" class="flex items-center justify-center gap-2 px-4 py-2 bg-emerald-950 text-white rounded-lg text-sm font-semibold shadow-sm hover:bg-slate-800 transition-colors">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
             </svg>
@@ -20,7 +20,7 @@
         <div>
             <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-400">Planning</h2>
             <nav class="mt-2 flex flex-col gap-1">
-                <a href="{{ route('backlog') }}" class="flex items-center gap-2 px-3 py-2 rounded text-sm font-medium bg-blue-50 text-blue-600">
+                <a href="{{ route('backlog') }}" class="flex items-center gap-2 px-3 py-2 rounded text-sm font-medium bg-emerald-50 text-emerald-600">
                     📋 Backlog
                 </a>
                 <a href="{{ route('sprint') }}" class="flex items-center gap-2 px-3 py-2 rounded text-sm font-medium text-slate-600 hover:bg-slate-100 transition-colors">
@@ -50,7 +50,7 @@
                     <p class="text-xs text-slate-500 font-medium">Projects / Create To-Do List App</p>
                     <h1 class="text-2xl font-bold text-slate-900 mt-1">Backlog</h1>
                 </div>
-                <a href="{{ route('scrum') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-5 py-2.5 rounded-md shadow transition-all duration-200 flex items-center gap-2">
+                <a href="{{ route('scrum') }}" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-5 py-2.5 rounded-md shadow transition-all duration-200 flex items-center gap-2">
                     <span>➕ Create</span>
                 </a>
             </div>
@@ -70,8 +70,8 @@
                             <div class="flex items-center gap-4">
                                 <!-- Dynamic Type Badges -->
                                 <span class="text-xs px-2.5 py-0.5 rounded-full font-medium 
-                                    {{ $item->type == 'Story' ? 'bg-blue-50 text-blue-600' : '' }}
-                                    {{ $item->type == 'Task' ? 'bg-purple-50 text-purple-600' : '' }}
+                                    {{ $item->type == 'Story' ? 'bg-emerald-50 text-emerald-600' : '' }}
+                                    {{ $item->type == 'Task' ? 'bg-emerald-50 text-emerald-600' : '' }}
                                     {{ $item->type == 'Bug' ? 'bg-red-50 text-red-600' : '' }}">
                                     {{ $item->type }}
                                 </span>
@@ -79,7 +79,7 @@
                                 <!-- Actions: Modify & Remove -->
                                 <div class="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                                     <!-- Edit Button -->
-                                    <button onclick="openEditModal({{ $item->id }}, '{{ addslashes($item->title) }}', '{{ $item->type }}')" class="text-xs text-slate-500 hover:text-blue-600 font-semibold">
+                                    <button onclick="openEditModal({{ $item->id }}, '{{ addslashes($item->title) }}', '{{ $item->type }}')" class="text-xs text-slate-500 hover:text-emerald-600 font-semibold">
                                         Modify
                                     </button>
                                     
@@ -108,14 +108,14 @@
                     name="title"
                     required
                     placeholder="What needs to be done?" 
-                    class="flex-1 px-4 py-2 border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm bg-slate-50"
+                    class="flex-1 px-4 py-2 border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm bg-slate-50"
                 />
-                <select name="type" class="px-3 py-2 border border-slate-200 rounded-md text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <select name="type" class="px-3 py-2 border border-slate-200 rounded-md text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500">
                     <option value="Task">Task</option>
                     <option value="Story">Story</option>
                     <option value="Bug">Bug</option>
                 </select>
-                <button type="submit" class="bg-slate-800 hover:bg-slate-900 text-white font-medium px-5 py-2 rounded-md text-sm transition-colors">
+                <button type="submit" class="bg-slate-800 hover:bg-emerald-950 text-white font-medium px-5 py-2 rounded-md text-sm transition-colors">
                     Add to Backlog
                 </button>
             </form>
@@ -124,7 +124,7 @@
     </main>
 
     <!-- HTML Edit Overlay Modal (Hidden By Default) -->
-    <div id="editModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+    <div id="editModal" class="fixed inset-0 bg-emerald-950/40 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
         <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6 border border-slate-200">
             <h3 class="text-lg font-bold text-slate-900 mb-4">Modify Task</h3>
             
@@ -134,12 +134,12 @@
                 
                 <div>
                     <label class="block text-xs font-bold uppercase text-slate-400 mb-1">Task Title</label>
-                    <input type="text" id="editTitle" name="title" required class="w-full px-3 py-2 border border-slate-200 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm">
+                    <input type="text" id="editTitle" name="title" required class="w-full px-3 py-2 border border-slate-200 rounded-md focus:ring-2 focus:ring-emerald-500 focus:outline-none text-sm">
                 </div>
 
                 <div>
                     <label class="block text-xs font-bold uppercase text-slate-400 mb-1">Issue Type</label>
-                    <select id="editType" name="type" class="w-full px-3 py-2 border border-slate-200 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm">
+                    <select id="editType" name="type" class="w-full px-3 py-2 border border-slate-200 rounded-md focus:ring-2 focus:ring-emerald-500 focus:outline-none text-sm">
                         <option value="Task">Task</option>
                         <option value="Story">Story</option>
                         <option value="Bug">Bug</option>
@@ -148,7 +148,7 @@
 
                 <div class="flex justify-end gap-2 pt-2">
                     <button type="button" onclick="closeEditModal()" class="px-4 py-2 text-sm font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-md">Cancel</button>
-                    <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md shadow">Save Changes</button>
+                    <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 rounded-md shadow">Save Changes</button>
                 </div>
             </form>
         </div>
