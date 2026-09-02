@@ -8,15 +8,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    --paper:#F2EAD9;
-    --paper-deep:#E5DAC0;
-    --desk:#C9B790;
-    --desk-dark:#A88F61;
-    --ink:#2B2520;
-    --ink-soft:#766A57;
-    --brand:#7B68EE;
-    --brand-dark:#5E4ED8;
-    --brand-light:#ECE8FF;
+    --paper:#f8fafc;
+    --paper-deep:#e2e8f0;
+    --desk:#cbd5e1;
+    --desk-dark:#94a3b8;
+    --ink:#0f172a;
+    --ink-soft:#64748b;
+    --brand:#10b981;
+    --brand-dark:#047857;
+    --brand-light:#ecfdf5;
     --red:#B6432F;
     --tan:#CDA868;
   }
