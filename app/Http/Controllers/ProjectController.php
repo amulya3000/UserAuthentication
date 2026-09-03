@@ -11,7 +11,7 @@ class ProjectController extends Controller
     public function update(Request $request)
     {
         // Security check
-        if (Auth::user()->role !== 'admin') {
+        if (!in_array(Auth::user()->role, ['admin', 'super_admin'])) {
             abort(403, 'Unauthorized action.');
         }
 
