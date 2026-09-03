@@ -11,7 +11,7 @@ class TaskController extends Controller
 {
     public function store(Request $request)
     {
-        if (Auth::user()->role !== 'admin') {
+        if (!in_array(Auth::user()->role, ['admin', 'super_admin'])) {
             abort(403, 'Unauthorized action');
         }
 
