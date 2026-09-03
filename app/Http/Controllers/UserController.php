@@ -15,7 +15,7 @@ class UserController extends Controller
         $data = $request->validate([
             'name'     => 'required',
             'age'      => 'required|integer|min:1|max:120',
-            'role'     => 'required|string|in:admin,employee',
+            'role'     => 'required|string|in:admin,employee,super_admin',
             'email'    => 'required|email|unique:users,email',
             'password' => 'required|confirmed|min:8',
         ]);
@@ -55,7 +55,7 @@ class UserController extends Controller
             }
 
             $request->session()->regenerate();
-            return redirect()->route($user->role === 'admin' ? 'admin' : 'dashboard');
+            return redirect()->route(in_array($user->role, ['admin', 'super_admin']) ? 'admin' : 'dashboard');
         }
 
         return back()->withErrors([
@@ -116,65 +116,85 @@ class UserController extends Controller
 
     public function approve(User $user)
     {
-        if (!Auth::check() || Auth::user()->role !== 'admin') {
+        if (!Auth::check() || !in_array(Auth::user()->role, ['admin', 'super_admin'])) {
             abort(403, 'Unauthorized.');
         }
         if ($user->status === 'pending') {
             $user->update(['status' => 'approved']);
-            return back()->with('success', "Employee {$user->name} has been approved.");
+            return redirect(route('admin') . '#userrole')->with('success', "Employee {$user->name} has been approved.");
         }
-        return back()->withErrors(['error' => 'Invalid action.']);
+        return redirect(route('admin') . '#userrole')->withErrors(['error' => 'Invalid action.']);
     }
 
     public function reject(User $user)
     {
-        if (!Auth::check() || Auth::user()->role !== 'admin') {
+        if (!Auth::check() || !in_array(Auth::user()->role, ['admin', 'super_admin'])) {
             abort(403, 'Unauthorized.');
         }
         if ($user->status === 'pending') {
             $user->update(['status' => 'rejected']);
-            return back()->with('success', "Employee {$user->name} has been rejected.");
+            return redirect(route('admin') . '#userrole')->with('success', "Employee {$user->name} has been rejected.");
         }
-        return back()->withErrors(['error' => 'Invalid action.']);
+        return redirect(route('admin') . '#userrole')->withErrors(['error' => 'Invalid action.']);
     }
 
     public function changeRole(Request $request, User $user)
     {
-        if (Auth::user()->role !== 'admin') {
+        $currentUser = Auth::user();
+        if (!in_array($currentUser->role, ['admin', 'super_admin'])) {
             abort(403, 'Unauthorized.');
         }
 
         // Prevent admin from changing their own role
-        if ($user->id === Auth::id()) {
-            return back()->withErrors(['error' => 'You cannot change your own role.']);
+        if ($user->id === $currentUser->id) {
+            return redirect(route('admin') . '#userrole')->withErrors(['error' => 'You cannot change your own role.']);
+        }
+
+        // Only super_admin can change role of admin/super_admin or grant admin/super_admin role
+        if ($currentUser->role !== 'super_admin') {
+            if (in_array($user->role, ['admin', 'super_admin'])) {
+                return redirect(route('admin') . '#userrole')->withErrors(['error' => 'You cannot change the role of an admin or super admin.']);
+            }
+            if (in_array($request->role, ['admin', 'super_admin'])) {
+                return redirect(route('admin') . '#userrole')->withErrors(['error' => 'You cannot assign admin or super admin roles.']);
+            }
         }
 
         $request->validate([
-            'role' => 'required|in:admin,employee',
+            'role' => 'required|in:admin,employee,super_admin',
         ]);
 
         $user->update(['role' => $request->role]);
-        return back()->with('success', "{$user->name}'s role updated to {$request->role}.");
+        return redirect(route('admin') . '#userrole')->with('success', "{$user->name}'s role updated to {$request->role}.");
     }
 
     public function deactivate(User $user)
     {
-        if (Auth::user()->role !== 'admin') {
+        $currentUser = Auth::user();
+        if (!in_array($currentUser->role, ['admin', 'super_admin'])) {
             abort(403, 'Unauthorized.');
         }
-        if ($user->id === Auth::id()) {
-            return back()->withErrors(['error' => 'You cannot deactivate your own account.']);
+        if ($user->id === $currentUser->id) {
+            return redirect(route('admin') . '#userrole')->withErrors(['error' => 'You cannot deactivate your own account.']);
         }
+        if ($currentUser->role !== 'super_admin' && in_array($user->role, ['admin', 'super_admin'])) {
+            return redirect(route('admin') . '#userrole')->withErrors(['error' => 'You cannot deactivate an admin or super admin.']);
+        }
+        
         $user->update(['status' => 'deactivated']);
-        return back()->with('success', "{$user->name}'s account has been deactivated.");
+        return redirect(route('admin') . '#userrole')->with('success', "{$user->name}'s account has been deactivated.");
     }
 
     public function reactivate(User $user)
     {
-        if (Auth::user()->role !== 'admin') {
+        $currentUser = Auth::user();
+        if (!in_array($currentUser->role, ['admin', 'super_admin'])) {
             abort(403, 'Unauthorized.');
         }
+        if ($currentUser->role !== 'super_admin' && in_array($user->role, ['admin', 'super_admin'])) {
+            return redirect(route('admin') . '#userrole')->withErrors(['error' => 'You cannot reactivate an admin or super admin.']);
+        }
         $user->update(['status' => 'approved']);
-        return back()->with('success', "{$user->name}'s account has been reactivated.");
+        return redirect(route('admin') . '#userrole')->with('success', "{$user->name}'s account has been reactivated.");
     }
 }
