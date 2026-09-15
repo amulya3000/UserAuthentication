@@ -32,7 +32,7 @@
         </div>
         <h2 class="text-xl font-semibold text-white mb-2">Private Notes</h2>
         <textarea id="privateNotes" rows="4" class="w-full p-2 rounded" placeholder="Your private notes (saved locally)"></textarea>
-        <button id="saveNotes" class="mt-2 w-full bg-blue-600 hover:bg-blue-500 text-white py-1 rounded">Save Notes</button>
+        <button id="saveNotes" class="mt-2 w-full bg-emerald-600 hover:bg-emerald-500 text-white py-1 rounded">Save Notes</button>
         <h2 class="text-xl font-semibold text-white mt-6 mb-2">Admin Notes</h2>
         <div id="adminNotesContainer" class="bg-white bg-opacity-30 p-2 rounded h-24 overflow-y-auto text-white">
             <p class="text-center italic">No admin notes.</p>

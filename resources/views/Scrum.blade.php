@@ -12,7 +12,7 @@
     <!-- Sidebar -->
     <aside class="w-64 bg-white border-r border-slate-200 p-4 hidden md:flex flex-col gap-6">
         <!-- Back to Dashboard -->
-        <a href="{{ route('dashboard') }}" class="flex items-center justify-center gap-2 px-4 py-2 bg-slate-900 text-white rounded-lg text-sm font-semibold shadow-sm hover:bg-slate-800 transition-colors">
+        <a href="{{ route('dashboard') }}" class="flex items-center justify-center gap-2 px-4 py-2 bg-emerald-950 text-white rounded-lg text-sm font-semibold shadow-sm hover:bg-slate-800 transition-colors">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
             </svg>
@@ -28,7 +28,7 @@
                 <a href="{{ route('sprint') }}" class="flex items-center gap-2 px-3 py-2 rounded text-sm font-medium text-slate-600 hover:bg-slate-100 transition-colors">
                     🏃 Sprints
                 </a>
-                <a href="{{ route('scrum') }}" class="flex items-center gap-2 px-3 py-2 rounded text-sm font-medium bg-blue-50 text-blue-600">
+                <a href="{{ route('scrum') }}" class="flex items-center gap-2 px-3 py-2 rounded text-sm font-medium bg-emerald-50 text-emerald-600">
                     📊 Scrum Board
                 </a>
             </nav>
@@ -74,18 +74,18 @@
                 </div>
 
                 <!-- Column 2: IN PROGRESS -->
-                <div class="bg-blue-50/50 p-3 rounded-lg min-h-[450px] min-w-[250px]">
-                    <h3 class="text-xs font-bold text-blue-500 uppercase mb-4 flex items-center justify-between">
+                <div class="bg-emerald-50/50 p-3 rounded-lg min-h-[450px] min-w-[250px]">
+                    <h3 class="text-xs font-bold text-emerald-500 uppercase mb-4 flex items-center justify-between">
                         <span>In Progress</span>
-                        <span class="bg-blue-200 text-blue-700 px-2 py-0.5 rounded-full text-[10px]">{{ $sprintBacklogs->where('status', 'In Progress')->count() }}</span>
+                        <span class="bg-emerald-200 text-emerald-700 px-2 py-0.5 rounded-full text-[10px]">{{ $sprintBacklogs->where('status', 'In Progress')->count() }}</span>
                     </h3>
                     
                     <div class="flex flex-col gap-3">
                         @forelse($sprintBacklogs->where('status', 'In Progress') as $item)
                         @include('components.scrum-card', ['item' => $item])
                         @empty
-                        <div class="flex flex-col gap-2 justify-center items-center h-24 border-2 border-dashed border-blue-200 rounded-md">
-                            <span class="text-xs text-blue-300 font-medium">Empty</span>
+                        <div class="flex flex-col gap-2 justify-center items-center h-24 border-2 border-dashed border-emerald-200 rounded-md">
+                            <span class="text-xs text-emerald-300 font-medium">Empty</span>
                         </div>
                         @endforelse
                     </div>

@@ -20,7 +20,7 @@ class ValidUser
             return redirect()->route('login')->with('error', 'Please log in to continue.');
         }
 
-        if ($request->is('admin') && Auth::user()->role !== 'admin') {
+        if ($request->is('admin') && !in_array(Auth::user()->role, ['admin', 'super_admin'])) {
             return redirect()->route('dashboard')->with('error', 'You do not have admin access.');
         }
 

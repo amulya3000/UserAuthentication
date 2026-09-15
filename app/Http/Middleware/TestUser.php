@@ -15,7 +15,6 @@ class TestUser
      */
     public function handle(Request $request, Closure $next): Response
     {
-            echo " <h3 class = 'text-danger'> Test user middleware</h3>";
-            return $next($request);
+        return $next($request);
     }
 }
